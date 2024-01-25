@@ -68,13 +68,14 @@
             <option name="tableUIInfoList">
               <list>
                 <TableUIInfo>
-                  <option name="className" value="InterfaceInfo" />
-                  <option name="tableName" value="interface_info" />
+                  <option name="className" value="UserInterfaceInfo" />
+                  <option name="tableName" value="user_interface_info" />
                 </TableUIInfo>
               </list>
             </option>
             <option name="templatesName" value="mybatis-plus3" />
             <option name="useActualColumns" value="true" />
+            <option name="useLombokPlugin" value="true" />
           </GenerateConfig>
         </option>
         <option name="moduleName" value="api-backend" />

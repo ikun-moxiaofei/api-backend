@@ -6,6 +6,7 @@ create table if not exists api_db.`interface_info`
     `name` varchar(256) not null comment '名称',
     `description` varchar(256) not null comment '接口描述',
     `url` varchar(512) not null comment '接口地址',
+    'requestParams' text not null comment '请求参数',
     `requestHeader` text null comment '请求头',
     `respondHeader` text null comment '响应头',
     `status` int default 0 not null comment '接口状态（0关闭，1开启）',
@@ -36,3 +37,20 @@ insert into api_db.`interface_info` (`name`, `description`, `url`, `requestHeade
 insert into api_db.`interface_info` (`name`, `description`, `url`, `requestHeader`, `respondHeader`, `status`, `useId`, `method`) values ('孟博文', '孙鹤轩', 'www.rosalina-vonrueden.io', '汪果', '万煜祺', 0, 394, '邹立果');
 insert into api_db.`interface_info` (`name`, `description`, `url`, `requestHeader`, `respondHeader`, `status`, `useId`, `method`) values ('戴伟宸', '金风华', 'www.josh-orn.net', '蔡浩宇', '苏伟泽', 0, 6777511, '金琪');
 insert into api_db.`interface_info` (`name`, `description`, `url`, `requestHeader`, `respondHeader`, `status`, `useId`, `method`) values ('夏擎苍', '王峻熙', 'www.thad-champlin.info', '唐致远', '白擎苍', 0, 76647, '崔晓啸');
+
+
+
+
+-- 用户调用接口关系表
+create table if not exists api_db.`user_interface_info`
+(
+    `id` bigint not null auto_increment comment '主键' primary key,
+    `userId` bigint not null comment '调用用户 id',
+    `interfaceInfoId` bigint not null comment '接口 id',
+    `totalNum` int default 0 not null comment '总调用次数',
+    `leftNum` int default 0 not null comment '剩余调用次数',
+    `status` int default 0 not null comment '0-正常，1-禁用',
+    `createTime` datetime default CURRENT_TIMESTAMP not null comment '创建时间',
+    `updateTime` datetime default CURRENT_TIMESTAMP not null on update CURRENT_TIMESTAMP comment '更新时间',
+    `isDelete` tinyint default 0 not null comment '是否删除(0-未删, 1-已删)'
+) comment '用户调用接口关系';

@@ -2,18 +2,20 @@ package com.mxf.project.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.example.apiclientsdk.client.ApiClient;
+import com.example.apiclientsdk.model.userr;
+import com.google.gson.Gson;
 import com.mxf.project.annotation.AuthCheck;
-import com.mxf.project.common.BaseResponse;
-import com.mxf.project.common.DeleteRequest;
-import com.mxf.project.common.ErrorCode;
-import com.mxf.project.common.ResultUtils;
+import com.mxf.project.common.*;
 import com.mxf.project.constant.CommonConstant;
 import com.mxf.project.exception.BusinessException;
 import com.mxf.project.model.dto.interfaceInfo.InterfaceInfoAddRequest;
+import com.mxf.project.model.dto.interfaceInfo.InterfaceInfoInvokeRequest;
 import com.mxf.project.model.dto.interfaceInfo.InterfaceInfoQueryRequest;
 import com.mxf.project.model.dto.interfaceInfo.InterfaceInfoUpdateRequest;
 import com.mxf.project.model.entity.InterfaceInfo;
 import com.mxf.project.model.entity.User;
+import com.mxf.project.model.enums.InterfaceInfoStatusEnum;
 import com.mxf.project.service.InterfaceInfoService;
 import com.mxf.project.service.UserService;
 import lombok.extern.slf4j.Slf4j;
@@ -26,7 +28,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
- * 帖子接口
+ * 接口管理
  *
  * @author mxf
  */
@@ -40,6 +42,9 @@ public class InterfaceInfoController {
 
     @Resource
     private UserService userService;
+
+    @Resource
+    private ApiClient apiClient;
 
     // region 增删改查
 
@@ -195,5 +200,100 @@ public class InterfaceInfoController {
     }
 
     // endregion
+    /**
+     * 发布
+     *
+     * @return
+     */
+    @PostMapping("/online")
+    @AuthCheck(mustRole = "admin")
+    public BaseResponse<Boolean> onlineInterfaceInfo(@RequestBody IdRequest idRequest,  HttpServletRequest request) {
+        if (idRequest == null || idRequest.getId() <= 0) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR);
+        }
+        // 查找数据
+        Long id = idRequest.getId();
+        InterfaceInfo oldInterfaceInfo = interfaceInfoService.getById(id);
+        if(oldInterfaceInfo == null){
+            throw new BusinessException(ErrorCode.NOT_FOUND_ERROR);
+        }
+        // 判断接口能否被调用
+        com.example.apiclientsdk.model.userr user = new userr();
+        user.setName("test");
+        String name = apiClient.getNameByPost(user);
+        if(StringUtils.isBlank(name)){
+            throw new BusinessException(ErrorCode.SYSTEM_ERROR,"接口验证失败");
+        }
+        InterfaceInfo interfaceInfo = new InterfaceInfo();
+        interfaceInfo.setId(id);
+        interfaceInfo.setStatus(InterfaceInfoStatusEnum.ONLINE.getValue());
+        boolean result = interfaceInfoService.updateById(interfaceInfo);
+        return ResultUtils.success(result);
+
+    }
+    /**
+     * 下线
+     *
+     * @return
+     */
+    @PostMapping("/offline")
+    @AuthCheck(mustRole = "admin")
+    public BaseResponse<Boolean> offlineInterfaceInfo(@RequestBody IdRequest idRequest,  HttpServletRequest request) {
+        if (idRequest == null || idRequest.getId() <= 0) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR);
+        }
+        // 查找数据
+        Long id = idRequest.getId();
+        InterfaceInfo oldInterfaceInfo = interfaceInfoService.getById(id);
+        if(oldInterfaceInfo == null){
+            throw new BusinessException(ErrorCode.NOT_FOUND_ERROR);
+        }
+
+        InterfaceInfo interfaceInfo = new InterfaceInfo();
+        interfaceInfo.setId(id);
+        interfaceInfo.setStatus(InterfaceInfoStatusEnum.OFFLINE.getValue());
+        boolean result = interfaceInfoService.updateById(interfaceInfo);
+        return ResultUtils.success(result);
+    }
+
+    /**
+     * 在线调用
+     *
+     * @return
+     */
+    @PostMapping("/invoke")
+    public BaseResponse<String> invokeInterfaceInfo(@RequestBody InterfaceInfoInvokeRequest interfaceInfoInvokeRequest, HttpServletRequest request) {
+        if (interfaceInfoInvokeRequest == null || interfaceInfoInvokeRequest.getId() <= 0) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR);
+        }
+        // 查找数据
+        Long id = interfaceInfoInvokeRequest.getId();
+        //判断是否存在
+        InterfaceInfo oldInterfaceInfo = interfaceInfoService.getById(id);
+        if(oldInterfaceInfo == null){
+            throw new BusinessException(ErrorCode.NOT_FOUND_ERROR);
+        }
+
+        // 获取用户请求参数
+        String userRequestParams = interfaceInfoInvokeRequest.getUserRequestParams();
+
+        //判断是否下线
+        if(oldInterfaceInfo.getStatus() == InterfaceInfoStatusEnum.OFFLINE.getValue()){
+            throw new BusinessException(ErrorCode.PARAMS_ERROR,"接口已关闭");
+        }
+        // 获取当前登录用户的ak和sk，这样相当于用户自己的这个身份去调用，
+        // 也不会担心它刷接口，因为知道是谁刷了这个接口，会比较安全
+        User loginUser = userService.getLoginUser(request);
+        String accessKey = loginUser.getAccessKey();
+        String secretKey = loginUser.getSecretKey();
+        // 我们只需要进行测试调用，所以我们需要解析传递过来的参数。
+        Gson gson = new Gson();
+        com.example.apiclientsdk.model.userr user = gson.fromJson(userRequestParams,com.example.apiclientsdk.model.userr.class);
+        //调用接口
+        ApiClient tempApi = new ApiClient(accessKey,secretKey);
+        String result = tempApi.getNameByPost(user);
+        return ResultUtils.success(result);
+
+    }
 
 }
