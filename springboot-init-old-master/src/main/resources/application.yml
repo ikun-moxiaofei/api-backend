@@ -20,6 +20,7 @@ spring:
     port: 6379
     host: localhost
     database: 0
+    timeout: 3000ms # 连接超时时间（毫秒）
 server:
   port: 7529
   servlet:
@@ -52,3 +53,15 @@ dubbo:
     # 配置注册中心为 Nacos，使用的地址是 nacos://localhost:8848
     id: nacos-registry
     address: nacos://localhost:8848
+
+
+ignored:
+  urls: #安全路径白名单
+    - /api/user/login
+    - /api/doc.html
+
+jwt:
+  tokenHeader: Authorization #JWT存储的请求头
+  sign: pengmq-secret #JWT加解密使用的密钥
+  expireTime: 30 #jwtToken的默认有效时间 单位分钟
+  tokenHead: 'Bearer '  #JWT负载中拿到开头

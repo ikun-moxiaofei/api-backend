@@ -21,6 +21,18 @@ public class User implements Serializable {
     private Long id;
 
     /**
+     * 令牌过期时间
+     * */
+    @TableField(exist = false)
+    private Long expireTime;
+
+    /**
+     * 登录时间
+     * */
+    @TableField(exist = false)
+    private Long loginTime;
+
+    /**
      * 用户昵称
      */
     private String userName;

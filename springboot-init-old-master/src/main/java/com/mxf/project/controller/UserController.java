@@ -12,13 +12,18 @@ import com.mxf.project.model.dto.user.*;
 import com.mxf.apicommon.model.entity.User;
 import com.mxf.project.model.vo.UserVO;
 import com.mxf.project.service.UserService;
+import com.mxf.project.util.JwtUtils;
+import com.mxf.project.util.RedisUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 /**
