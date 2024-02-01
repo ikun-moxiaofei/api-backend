@@ -1,6 +1,6 @@
 package com.mxf.project.service;
 
-import com.mxf.project.model.entity.User;
+import com.mxf.apicommon.model.entity.User;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

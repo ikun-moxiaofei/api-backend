@@ -9,7 +9,7 @@ import com.mxf.project.common.ErrorCode;
 import com.mxf.project.common.ResultUtils;
 import com.mxf.project.exception.BusinessException;
 import com.mxf.project.model.dto.user.*;
-import com.mxf.project.model.entity.User;
+import com.mxf.apicommon.model.entity.User;
 import com.mxf.project.model.vo.UserVO;
 import com.mxf.project.service.UserService;
 import org.apache.commons.lang3.StringUtils;

@@ -2,6 +2,7 @@ package com.mxf.project.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.mxf.apicommon.model.entity.User;
 import com.mxf.project.annotation.AuthCheck;
 import com.mxf.project.common.BaseResponse;
 import com.mxf.project.common.DeleteRequest;
@@ -13,7 +14,7 @@ import com.mxf.project.model.dto.post.PostAddRequest;
 import com.mxf.project.model.dto.post.PostQueryRequest;
 import com.mxf.project.model.dto.post.PostUpdateRequest;
 import com.mxf.project.model.entity.Post;
-import com.mxf.project.model.entity.User;
+import com.mxf.apicommon.model.entity.User;
 import com.mxf.project.service.PostService;
 import com.mxf.project.service.UserService;
 import lombok.extern.slf4j.Slf4j;

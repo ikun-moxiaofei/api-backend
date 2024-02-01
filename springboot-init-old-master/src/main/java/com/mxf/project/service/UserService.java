@@ -2,7 +2,7 @@ package com.mxf.project.service;
 
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.mxf.project.model.entity.User;
+import com.mxf.apicommon.model.entity.User;
 
 import javax.servlet.http.HttpServletRequest;
 

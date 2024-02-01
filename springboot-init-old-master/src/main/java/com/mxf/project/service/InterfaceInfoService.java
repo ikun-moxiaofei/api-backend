@@ -1,9 +1,8 @@
 package com.mxf.project.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.mxf.project.model.entity.InterfaceInfo;
-import com.mxf.project.model.entity.InterfaceInfo;
-import com.mxf.project.model.entity.Post;
+import com.mxf.apicommon.model.entity.InterfaceInfo;
+
 
 /**
 * @author JD

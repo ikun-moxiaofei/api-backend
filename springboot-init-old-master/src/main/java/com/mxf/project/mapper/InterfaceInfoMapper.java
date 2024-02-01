@@ -1,7 +1,7 @@
 package com.mxf.project.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.mxf.project.model.entity.InterfaceInfo;
+import com.mxf.apicommon.model.entity.InterfaceInfo;
 
 /**
 * @author JD

@@ -3,5 +3,7 @@
   <component name="SqlDialectMappings">
     <file url="file://$PROJECT_DIR$/springboot-init-old-master/sql/db.sql" dialect="MySQL" />
     <file url="file://$PROJECT_DIR$/springboot-init-old-master/sql/ddl.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/springboot-init-old-master/src/main/resources/mapper/InterfaceInfoMapper.xml" dialect="GenericSQL" />
+    <file url="PROJECT" dialect="MySQL" />
   </component>
 </project>

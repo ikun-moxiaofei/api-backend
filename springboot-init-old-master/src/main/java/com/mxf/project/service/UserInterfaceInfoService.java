@@ -1,8 +1,7 @@
 package com.mxf.project.service;
 
-import com.mxf.project.model.entity.InterfaceInfo;
-import com.mxf.project.model.entity.UserInterfaceInfo;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.mxf.apicommon.model.entity.UserInterfaceInfo;
 
 /**
 * @author JD
@@ -18,4 +17,6 @@ public interface UserInterfaceInfoService extends IService<UserInterfaceInfo> {
      * @param add 是否为创建校验
      */
     void validUserInterfaceInfo(UserInterfaceInfo userinterfaceInfo, boolean add);
+
+    boolean invokeCount(long interfaceInfoId, long userId);
 }

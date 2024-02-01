@@ -13,8 +13,8 @@ import com.mxf.project.model.dto.interfaceInfo.InterfaceInfoAddRequest;
 import com.mxf.project.model.dto.interfaceInfo.InterfaceInfoInvokeRequest;
 import com.mxf.project.model.dto.interfaceInfo.InterfaceInfoQueryRequest;
 import com.mxf.project.model.dto.interfaceInfo.InterfaceInfoUpdateRequest;
-import com.mxf.project.model.entity.InterfaceInfo;
-import com.mxf.project.model.entity.User;
+import com.mxf.apicommon.model.entity.InterfaceInfo;
+import com.mxf.apicommon.model.entity.User;
 import com.mxf.project.model.enums.InterfaceInfoStatusEnum;
 import com.mxf.project.service.InterfaceInfoService;
 import com.mxf.project.service.UserService;
@@ -65,7 +65,7 @@ public class InterfaceInfoController {
         // 校验
         interfaceInfoService.validInterfaceInfo(interfaceInfo, true);
         User loginUser = userService.getLoginUser(request);
-        interfaceInfo.setUseId(loginUser.getId());
+        interfaceInfo.setUserId(loginUser.getId());
         boolean result = interfaceInfoService.save(interfaceInfo);
         if (!result) {
             throw new BusinessException(ErrorCode.OPERATION_ERROR);
@@ -94,7 +94,7 @@ public class InterfaceInfoController {
             throw new BusinessException(ErrorCode.NOT_FOUND_ERROR);
         }
         // 仅本人或管理员可删除
-        if (!oldInterfaceInfo.getUseId().equals(user.getId()) && !userService.isAdmin(request)) {
+        if (!oldInterfaceInfo.getUserId().equals(user.getId()) && !userService.isAdmin(request)) {
             throw new BusinessException(ErrorCode.NO_AUTH_ERROR);
         }
         boolean b = interfaceInfoService.removeById(id);
@@ -126,7 +126,7 @@ public class InterfaceInfoController {
             throw new BusinessException(ErrorCode.NOT_FOUND_ERROR);
         }
         // 仅本人或管理员可修改
-        if (!oldInterfaceInfo.getUseId().equals(user.getId()) && !userService.isAdmin(request)) {
+        if (!oldInterfaceInfo.getUserId().equals(user.getId()) && !userService.isAdmin(request)) {
             throw new BusinessException(ErrorCode.NO_AUTH_ERROR);
         }
         boolean result = interfaceInfoService.updateById(interfaceInfo);
